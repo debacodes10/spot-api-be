@@ -1,8 +1,7 @@
 
 ## API Calls 
 
-- [x]
-#### Get playback state (GET) :
+#### - [x] Get playback state (GET) :
 ```bash 
 curl --request GET \
   --url http://localhost:3000/api/playback/playback-state \

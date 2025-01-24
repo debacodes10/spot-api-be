@@ -23,13 +23,8 @@ const getToken = async () => {
 
 const getUserPlaylists = async (req, res) => {
     try {
-        // Fetch token
         const token = await getToken();
-
-        // Example user ID for testing. Replace with `req.params.userId` for dynamic user info.
         const userId = req.params.userId;
-
-        // Fetch user's playlists
         const result = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
             method: 'GET',
             headers: { Authorization: 'Bearer ' + token },
@@ -41,7 +36,6 @@ const getUserPlaylists = async (req, res) => {
             return res.status(result.status).json({ error: data.error || 'Failed to fetch playlists' });
         }
 
-        // Return playlists as JSON
         res.status(200).json({ playlists: data.items });
     } catch (error) {
         res.status(500).json({ error: 'An error occurred: ' + error.message });
