@@ -6,10 +6,11 @@ const mediaControl = require('../controllers/playback-state-controller.js');
 const router = express.Router();
 
 // Route to get the playback state
+router.get('/:userId/playlists', mediaControl.getUserPlaylists);
 router.get('/playback-state', mediaControl.getPlaybackState);
-router.get('/current-track', mediaControl.getCurrentlyPlayingTrack)
-router.put('/resume', mediaControl.playTrackOrAlbum)
-router.put('/pause', mediaControl.pausePlayback)
+router.get('/current-track', mediaControl.getCurrentlyPlayingTrack);
+router.put('/resume', mediaControl.playTrackOrAlbum);
+router.put('/pause', mediaControl.pausePlayback);
 
 module.exports = router;
 

@@ -74,16 +74,38 @@ const callback = async (req, res) => {
     // Extract access token and other details
     const { access_token, refresh_token, expires_in } = tokenData;
 
+    // Make a request to Spotify's /me endpoint to get the user's profile
+    const userResponse = await fetch('https://api.spotify.com/v1/me', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+      },
+    });
+
+    if (!userResponse.ok) {
+      // Handle HTTP errors when fetching user profile
+      const errorResponse = await userResponse.json();
+      console.error('User Profile Error:', errorResponse);
+      return res.status(500).json({ error: 'Failed to fetch user profile.' });
+    }
+
+    const userData = await userResponse.json();
+
+    // Extract userId (Spotify user ID)
+    const userId = userData.id;
+
     console.log('Access Token:', access_token);
     console.log('Refresh Token:', refresh_token);
     console.log('Expires In:', expires_in);
+    console.log('User ID:', userId);
 
-    // Optionally, store tokens securely or send them to the frontend
+    // Return tokens and user ID as the response
     return res.status(200).json({
       message: 'Authorization successful!',
       access_token: access_token,
       refresh_token: refresh_token,
       expires_in: expires_in,
+      user_id: userId, // Include userId in the response
     });
 
   } catch (error) {

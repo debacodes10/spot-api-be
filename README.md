@@ -2,6 +2,13 @@
 ## API Calls 
 
 - [x]
+#### Get user's playlists (GET) :
+```bash
+curl --request GET \
+  --url http://localhost:3000/api/playback/:userId/playlists
+```
+
+- [x]
 #### Get playback state (GET) :
 ```bash 
 curl --request GET \

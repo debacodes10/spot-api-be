@@ -1,7 +1,6 @@
 require('dotenv').config()
 
 const express = require('express');
-const playlistRoutes = require('./routes/get-playlist-route.js');
 const path = require('path');
 const authRoutes = require('./routes/auth-routes.js');
 const playbackRoutes = require("./routes/playback-state-route.js")
@@ -16,7 +15,6 @@ app.use(express.json());
 
 // API routes
 app.use('/api/spotify', authRoutes);
-app.use('/api/playlist', playlistRoutes);
 app.use('/api/playback', playbackRoutes);
 
 // Root endpoint for testing
