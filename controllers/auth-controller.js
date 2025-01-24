@@ -1,8 +1,9 @@
 const querystring = require('querystring');
+require('dotenv').config()
 
-const clientId = '9c5f1ea0e977447baff898a5f4a9239f'; // Replace with your Spotify Client ID
-const clientSecret = '6565f95f8f784aeeb43d9aff66f3090d'; // Replace with your Spotify Client Secret
-const redirectUri = 'http://localhost:3000/api/spotify/callback'; // Update this as per your app's settings
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
+const redirectUri = process.env.CALLBACK_URI;
 
 // Generate a random string for the state parameter
 function generateRandomString(length) {

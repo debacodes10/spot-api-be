@@ -1,7 +1,47 @@
+require('dotenv').config()
 
-// controllers/playback-state-controller.js
+const clientId = process.env.CLIENT_ID;
+const clientSecret = process.env.CLIENT_SECRET;
 
-// Function to get the user's playback state
+const getToken = async () => {
+    try {
+        const result = await fetch('https://accounts.spotify.com/api/token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + Buffer.from(`${clientId}:${clientSecret}`).toString('base64'),
+            },
+            body: 'grant_type=client_credentials',
+        });
+
+        const data = await result.json();
+        return data.access_token;
+    } catch (error) {
+        throw new Error('Failed to fetch token: ' + error.message);
+    }
+};
+
+const getUserPlaylists = async (req, res) => {
+    try {
+        const token = await getToken();
+        const userId = req.params.userId;
+        const result = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+            method: 'GET',
+            headers: { Authorization: 'Bearer ' + token },
+        });
+
+        const data = await result.json();
+
+        if (result.status !== 200) {
+            return res.status(result.status).json({ error: data.error || 'Failed to fetch playlists' });
+        }
+
+        res.status(200).json({ playlists: data.items });
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred: ' + error.message });
+    }
+};
+
 const getPlaybackState = async (req, res) => {
     try {
         // Access token should be passed by the user after they authenticate (or via session)
@@ -145,4 +185,4 @@ const pausePlayback = async (req, res) => {
     }
 };
 
-module.exports = { getPlaybackState, getCurrentlyPlayingTrack, playTrackOrAlbum, pausePlayback };
+module.exports = { getUserPlaylists, getPlaybackState, getCurrentlyPlayingTrack, playTrackOrAlbum, pausePlayback };
