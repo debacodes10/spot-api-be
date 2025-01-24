@@ -298,9 +298,39 @@ const seekTrackPosition = async (req, res) => {
 
   } catch (error) {
     console.error('Unexpected Error:', error);;
-    return res.status(500).json({ error: "An unexpected error occured while setting track position."});
+    return res.status(500).json({ error: "An unexpected error occured while setting track position." });
   }
+}
 
+const getQueue = async (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+
+  try{
+    
+    const response = await fetch('https://api.spotify.com/v1/me/player/queue', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      return res.status(response.status).json({ error: errorResponse || `Failed to fetch user's queue.` });
+    }
+    
+    const data = await response.json();
+
+    return res.status(200).json({
+      message: `Successfully fetched user's queue.`, 
+      currently_playing: data.currently_playing,
+      queue: data.queue,
+    });
+
+  } catch (error) {
+    console.error("Unexpected Error:", error);
+    return res.statu(500).json({ error: "An unexpected error occured while fetching the user's queue." })
+  }
 }
 
 module.exports = {
@@ -312,5 +342,6 @@ module.exports = {
   skipToNextTrack,
   skipToPrevious,
   setPlaybackVolume,
-  seekTrackPosition
+  seekTrackPosition,
+  getQueue
 };

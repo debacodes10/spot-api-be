@@ -84,4 +84,13 @@ curl --request PUT \
 ```bash
 curl --request PUT \
   --url 'http://localhost:3000/api/playback/set-volume?volume_percent=50' \
-  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' 
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN'
+```
+
+- [x]
+#### Get the user's queue (GET) :
+```bash
+curl --request GET \
+  --url 'http://localhost:3000/api/playback/queue' \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN'
+```
