@@ -55,7 +55,7 @@ curl --request PUT \
   --header 'Authorization: Bearer YOUR_ACCESS_TOKEN'
 ```
 
--[ ]
+-[x]
 #### Skip to next track (POST) :
 ```bash
 curl --request POST \
@@ -63,7 +63,7 @@ curl --request POST \
   --header 'Authorization: Bearer YOUR_ACCESS_TOKEN'
 ```
 
-- [ ]
+- [x]
 #### Skip to previous track (POST) :
 ```bash
 curl --request POST \

@@ -3,7 +3,7 @@ require('dotenv').config()
 const express = require('express');
 const path = require('path');
 const authRoutes = require('./routes/auth-routes.js');
-const playbackRoutes = require("./routes/playback-state-route.js")
+const musicRoutes = require("./routes/music-route.js")
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -15,7 +15,7 @@ app.use(express.json());
 
 // API routes
 app.use('/api/spotify', authRoutes);
-app.use('/api/playback', playbackRoutes);
+app.use('/api/playback', musicRoutes);
 
 // Root endpoint for testing
 app.get('/', (req, res) => {

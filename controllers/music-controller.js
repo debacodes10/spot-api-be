@@ -185,4 +185,67 @@ const pausePlayback = async (req, res) => {
     }
 };
 
-module.exports = { getUserPlaylists, getPlaybackState, getCurrentlyPlayingTrack, playTrackOrAlbum, pausePlayback };
+// Function to skip to the next track
+const skipToNextTrack = async (req, res) => {
+    try {
+        const token = req.headers['authorization']?.split(' ')[1];
+
+        // Call Spotify's API to skip to the next track
+        const response = await fetch('https://api.spotify.com/v1/me/player/next', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (!response.ok) {
+          const errorResponse = await response.json();
+          return res.status(response.status).json({ error: errorResponse || 'Failed to skip current track.' });
+        }
+
+        return res.status(204).json({
+          message: 'Skipped current track succcessfully.'  
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: 'An error occurred: ' + error.message });
+    }
+};
+
+const skipToPrevious = async (req, res) => {
+  try {
+
+    const token = req.headers['authorization']?.split(' ')[1];
+
+    const response = await fetch('https://api.spotify.com/v1/me/player/previous', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      },
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      return res.status(response.status).json({ error: errorResponse || 'Failed to skip current track.' });
+    }
+
+    return res.status(204).json({
+      message: "Skipped to previous track successfully."
+    });
+
+  } catch (error) {
+      res.status(500).json({ error: 'An error occured: ' + error.message });
+  }
+}
+
+module.exports = {
+  getUserPlaylists, 
+  getPlaybackState, 
+  getCurrentlyPlayingTrack, 
+  playTrackOrAlbum, 
+  pausePlayback,
+  skipToNextTrack,
+  skipToPrevious,
+};
