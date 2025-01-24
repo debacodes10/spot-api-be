@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    button {
+      padding: 15px 25px;
+      font-size: 18px;
+      color: #fff;
+      background-color: #1db954;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1ed760;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to Spotify Login</h1>
+  <p>Click the button below to log in with Spotify and retrieve your User ID.</p>
+  <button onclick="login()">Login with Spotify</button>
+
+  <script>
+    function login() {
+      window.location.href = 'http://localhost:3000/api/spotify/login'; // Redirect to login endpoint
+    }
+  </script>
+</body>
+</html>
+
