@@ -240,6 +240,69 @@ const skipToPrevious = async (req, res) => {
   }
 }
 
+// Changing Playback Volume
+const setPlaybackVolume = async (req, res) => {
+    const token = req.headers['authorization']?.split(' ')[1]; // Extract the access token from the Authorization header
+
+    const { volume_percent } = req.query; // Extract volume percentage from the query parameters
+
+    if (!volume_percent || volume_percent < 0 || volume_percent > 100) {
+        return res.status(400).json({ error: 'Invalid or missing volume_percent. It should be between 0 and 100.' });
+    }
+
+    try {
+        const response = await fetch(`https://api.spotify.com/v1/me/player/volume?volume_percent=${volume_percent}`, {
+            method: 'PUT',
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+        });
+          if (!response.ok) {
+            const errorResponse = await response.json();
+            return res.status(response.status).json({ error: errorResponse || 'Failed to set volume.' });
+          }
+
+          return res.status(204).json({
+            message: `Volume set to ${volume_percent} successfully.`
+          });
+
+            } catch (error) {
+        console.error('Unexpected Error:', error);
+        return res.status(500).json({ error: 'An unexpected error occurred while setting playback volume.' });
+    }
+};
+
+// Seek to position of track
+const seekTrackPosition = async (req, res) => {
+
+  const token = req.headers['authorization']?.split(' ')[1];
+
+  const { position_ms } = req.query;
+
+  try {
+    const response = await fetch(`https://api.spotify.com/v1/me/player/seek?position_ms=${position_ms}`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      return res.status(response.status).json({error: errorResponse || 'Failed to set track position.' })
+    }
+
+    return res.status(204).json({
+      message: `Set track position to ${position_ms} ms successfully.`
+    });
+
+  } catch (error) {
+    console.error('Unexpected Error:', error);;
+    return res.status(500).json({ error: "An unexpected error occured while setting track position."});
+  }
+
+}
+
 module.exports = {
   getUserPlaylists, 
   getPlaybackState, 
@@ -248,4 +311,6 @@ module.exports = {
   pausePlayback,
   skipToNextTrack,
   skipToPrevious,
+  setPlaybackVolume,
+  seekTrackPosition
 };

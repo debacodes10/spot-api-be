@@ -12,6 +12,8 @@ router.get('/current-track', mediaControl.getCurrentlyPlayingTrack);
 
 router.put('/resume', mediaControl.playTrackOrAlbum);
 router.put('/pause', mediaControl.pausePlayback);
+router.put('/set-volume', mediaControl.setPlaybackVolume);
+router.put('/seek', mediaControl.seekTrackPosition)
 
 router.post('/next', mediaControl.skipToNextTrack);
 router.post('/previous', mediaControl.skipToPrevious);

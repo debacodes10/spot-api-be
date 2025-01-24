@@ -71,26 +71,17 @@ curl --request POST \
   --header 'Authorization: Bearer YOUR_ACCESS_TOKEN'
 ```
 
-- [ ]
+- [x]
 #### Seek to a position in the current track (PUT) :
 ```bash
 curl --request PUT \
-  --url http://localhost:3000/api/playback/seek \
-  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
-  --header 'Content-Type: application/json' \
-  --data '{
-    "position_ms": POSITION_MS
-}'
+  --url 'http://localhost:3000/api/playback/seek?position_ms=200000' \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN'
 ```
 
-- [ ]
+- [x]
 #### Set playback volume (PUT) :
 ```bash
 curl --request PUT \
-  --url http://localhost:3000/api/playback/volume \
-  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' \
-  --header 'Content-Type: application/json' \
-  --data '{
-    "volume_percent": VOLUME_PERCENT
-}'
-```
+  --url 'http://localhost:3000/api/playback/set-volume?volume_percent=50' \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN' 
