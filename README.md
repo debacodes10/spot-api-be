@@ -94,3 +94,10 @@ curl --request GET \
   --url 'http://localhost:3000/api/playback/queue' \
   --header 'Authorization: Bearer YOUR_ACCESS_TOKEN'
 ```
+
+- [x]
+#### Get track details based on string search (GET) :
+```bash
+curl --request GET \                                                                                                  --url 'http://localhost:3000/api/playback/track-search?q=big+black+car&type=track&limit=3' \
+  --header 'Authorization: Bearer YOUR_ACCESS_TOKEN'
+```

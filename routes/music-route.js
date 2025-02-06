@@ -10,6 +10,7 @@ router.get('/:userId/playlists', mediaControl.getUserPlaylists);
 router.get('/playback-state', mediaControl.getPlaybackState);
 router.get('/current-track', mediaControl.getCurrentlyPlayingTrack);
 router.get('/queue', mediaControl.getQueue);
+router.get('/track-search', mediaControl.searchSong);
 
 router.put('/resume', mediaControl.playTrackOrAlbum);
 router.put('/pause', mediaControl.pausePlayback);

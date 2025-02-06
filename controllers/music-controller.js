@@ -8,7 +8,7 @@ const getToken = async () => {
         const result = await fetch('https://accounts.spotify.com/api/token', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+                'Content-type': 'application/x-www-form-urlencoded',
                 'Authorization': 'Basic ' + Buffer.from(`${clientId}:${clientSecret}`).toString('base64'),
             },
             body: 'grant_type=client_credentials',
@@ -333,6 +333,48 @@ const getQueue = async (req, res) => {
   }
 }
 
+const searchSong = async (req, res) => {
+  const token = req.headers['authorization']?.split(' ')[1];
+  const songName = req.query.q; // Get the song name from the query parameter
+
+  if (!token) {
+    return res.status(401).json({ error: 'Authorization token is missing' });
+  }
+
+  if (!songName) {
+    return res.status(400).json({ error: 'Song name is required' });
+  }
+
+  try {
+    const response = await fetch(`https://api.spotify.com/v1/search?q=${encodeURIComponent(songName)}&type=track&limit=3`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      return res.status(response.status).json({ error: errorResponse.error || 'Failed to fetch track search' });
+    }
+
+    const data = await response.json();
+    return res.status(200).json({
+      message: `Fetched song search results`,
+      data: data.tracks.items.map(track => ({
+        name: track.name,
+        id: track.id,
+        artists: track.artists.map(artist => artist.name),
+        album: track.album.name,
+        url: track.external_urls.spotify
+      }))
+    });
+  } catch (error) {
+    console.error("Unexpected error: ", error);
+    return res.status(500).json({ error: "An error occurred while trying to fetch track search." });
+  }
+};
+
 module.exports = {
   getUserPlaylists, 
   getPlaybackState, 
@@ -343,5 +385,6 @@ module.exports = {
   skipToPrevious,
   setPlaybackVolume,
   seekTrackPosition,
-  getQueue
+  getQueue,
+  searchSong,
 };
